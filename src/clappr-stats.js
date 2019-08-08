@@ -256,7 +256,6 @@ export default class ClapprStats extends ContainerPlugin {
   }
 
   onProgress(progress) {
-    Logger.debug('progress buffering ', progress)
     this._metrics.extra.buffersize = progress.current
       ? progress.current * 1000
       : '*'
