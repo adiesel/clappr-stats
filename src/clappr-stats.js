@@ -257,8 +257,9 @@ export default class ClapprStats extends ContainerPlugin {
 
   onProgress(progress) {
     Logger.debug('progress buffering ', progress)
-    this._metrics.extra.buffersize = progress.current * 1000
-    Logger.debug('@@@ no stats', this._metrics.extra.buffersize)
+    this._metrics.extra.buffersize = progress.current
+      ? progress.current * 1000
+      : '*'
   }
 
   _newMetrics() {
@@ -365,8 +366,11 @@ export default class ClapprStats extends ContainerPlugin {
 
   _calculatePercentages() {
     if (this._metrics.extra.duration > 0) {
-      this._metrics.extra.bufferingPercentage =
-        (this._metrics.extra.buffersize / this._metrics.extra.duration) * 100
+      const bufferSizeIsNumber =
+        typeof this._metrics.extra.buffersize == 'number'
+      this._metrics.extra.bufferingPercentage = bufferSizeIsNumber
+        ? (this._metrics.extra.buffersize / this._metrics.extra.duration) * 100
+        : '*'
     }
   }
 
