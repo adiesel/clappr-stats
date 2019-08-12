@@ -349,12 +349,13 @@ export default class ClapprStats extends ContainerPlugin {
     var totalTime = this._metrics.extra.bitratesHistory
       .map(x => x.time)
       .reduce((a, b) => a + b, 0)
-    this._metrics.extra.bitrateWeightedMean =
-      this._metrics.extra.bitratesHistory
-        .map(x => {
-          return x.bitrate * x.time
-        })
-        .reduce((a, b) => a + b, 0) / totalTime
+      const bitrateWeightedMean = this._metrics.extra.bitratesHistory
+      .map(x => {
+        return x.bitrate * x.time
+      })
+      .reduce((a, b) => a + b, 0) / totalTime
+
+    this._metrics.extra.bitrateWeightedMean = isNaN(bitrateWeightedMean) ? 0 : bitrateWeightedMean
 
     if (this._metrics.extra.bitratesHistory.length > 0) {
       this._metrics.extra.bitrateMostUsed = this._metrics.extra.bitratesHistory
